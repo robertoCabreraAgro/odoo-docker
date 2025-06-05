@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   db:
     image: postgis/postgis:16-3.4
@@ -15,7 +13,7 @@ services:
     networks:
       - odoo_net
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "openpg", "-d", "marin182"]
+      test: ["CMD-SHELL", "pg_isready -U openpg -d odoo"]
       interval: 5s
       timeout: 3s
       retries: 12
@@ -27,11 +25,7 @@ services:
       - "8069:8069"
     volumes:
       - odoo-data:/opt/odoo/.local/share/Odoo
-    environment:
-      - POSTGRES_USER=openpg
-      - POSTGRES_PASSWORD=openpgpwd
-      - POSTGRES_HOST=db
-      - POSTGRES_PORT=5432
+      - ./odoo.conf:/etc/odoo/odoo.conf
     depends_on:
       db:
         condition: service_healthy
