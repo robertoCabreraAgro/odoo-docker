@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  odoo:
+    build: .
+    container_name: odoo_18_Community_marin182
+    ports:
+      - "8069:8069"
+    volumes:
+      - odoo-data:/opt/odoo/.local/share/Odoo
+    environment:
+      - POSTGRES_USER=openpg
+      - POSTGRES_PASSWORD=openpgpwd
+      - POSTGRES_HOST=host.docker.internal
+      - POSTGRES_PORT=5433
+    networks:
+      - odoo_net
+
+volumes:
+  odoo-data:
+
+networks:
+  odoo_net:
