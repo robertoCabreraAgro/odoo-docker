@@ -1,9 +1,22 @@
 version: "3.8"
 
 services:
+  db:
+    image: postgres:16
+    container_name: postgres_16_main_1
+    environment:
+      POSTGRES_DB: odoo
+      POSTGRES_USER: openpg
+      POSTGRES_PASSWORD: openpgpwd
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - odoo_net
   odoo:
     build: .
-    container_name: odoo_18_Community_marin182
+    container_name: odoo_18_2_marin
     ports:
       - "8069:8069"
     volumes:
@@ -11,12 +24,13 @@ services:
     environment:
       - POSTGRES_USER=openpg
       - POSTGRES_PASSWORD=openpgpwd
-      - POSTGRES_HOST=host.docker.internal
-      - POSTGRES_PORT=5433
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
     networks:
       - odoo_net
 
 volumes:
+  db-data:
   odoo-data:
 
 networks:
